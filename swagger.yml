@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: hey intern api - OpenAPI 3.0
+  version: 1.0.11
+paths:
+  /purchase:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Purchase"
+        required: true
+      responses:
+        '201':
+          description: Created Content
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Purchase"
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /purchase/{purchases_id}:
+    get:
+      parameters:
+        - name: purchases_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful purchases
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Purchase"
+
+
+components:
+  parameters:
+    userId:
+      name: userId
+      in: path
+      required: true
+      description: ユーザーの ID
+      schema:
+        type: integer
+  schemas:
+    Purchase:
+      type: object
+      description: 購入する
+      properties:
+        name:
+          type: string
+          description: ユーザーの名前
+        address:
+          type: string
+          description: 居住地
+        phone_number:
+          type: string
+          description: 電話番号
+        mail_address:
+          type: string
+          description: メールアドレス
+        is_acceptance:
+          type: boolean
+          default: false
+          description: 受け取ったかどうか
+        products_id:
+          type: integer
+          description: 商品ID
+      required:
+        - name
+        - address
+        - phone_number
+        - mail_address
+        - is_acceptance
+        - products_id
