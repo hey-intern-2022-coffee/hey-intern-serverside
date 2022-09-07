@@ -5,11 +5,13 @@ info:
 paths:
   /purchase:
     post:
+      summary: 購入時にpostする。
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/Purchase"
+              # "$ref": "#/components/schemas/Purchase"
+              "$ref": "#/components/schemas/UserInfo"
         required: true
       responses:
         '201':
@@ -22,8 +24,29 @@ paths:
           description: Bad request
         '500':
           description: Internal server error
+    patch:
+      summary: 購入IDに紐づいた商品の在庫を1減らす
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Purchase"
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
   /purchase/{purchases_id}:
     get:
+      summary: 事前決済の現地受けとり情報を取得する
       parameters:
         - name: purchases_id
           in: path
@@ -38,8 +61,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Purchase"
-
-
 components:
   parameters:
     userId:
@@ -50,9 +71,9 @@ components:
       schema:
         type: integer
   schemas:
-    Purchase:
+    UserInfo: 
       type: object
-      description: 購入する
+      description: ユーザー情報
       properties:
         name:
           type: string
@@ -66,17 +87,28 @@ components:
         mail_address:
           type: string
           description: メールアドレス
-        is_acceptance:
-          type: boolean
-          default: false
-          description: 受け取ったかどうか
-        products_id:
-          type: integer
-          description: 商品ID
+    PurchaseItems: 
+      type: array
+      description: 購入した商品
+      properties:
+        items: 
+          
+    Purchase:
+      type: object
+      description: 購入する
+      allOf:
+      - "$ref": "#/components/schemas/UserInfo"
+      - properties:
+          id:
+            type: integer
+            description: PurchaseのID
+          is_acceptance:
+            type: boolean
+            default: false
+            description: 受け取ったかどうか
       required:
         - name
         - address
         - phone_number
         - mail_address
         - is_acceptance
-        - products_id
