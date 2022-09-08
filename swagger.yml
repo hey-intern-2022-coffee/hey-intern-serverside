@@ -61,7 +61,44 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Purchase"
-
+  /products:
+    post:
+      summary: 商品を登録する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Products"
+      responses:
+        '201':
+          description: created products
+          content:
+           application/json:
+            schema:
+              "$ref": "#/components/schemas/Products"
+    get:
+      summary: 商品の一覧取得する
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Products"
+  /onlinestore/allproducts:
+    get:
+      summary: オンラインショップ側の商品一覧を取得する
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Products"
 components:
   parameters:
     userId:
@@ -106,6 +143,31 @@ components:
             type: boolean
             default: false
             description: 受け取ったかどうか
+    Products:
+      type: object
+      description: 登録された商品
+      allOf:
+      - "$ref": "#/components/schemas/OnlineStock"
+      - properties:
+          id:
+            type: integer
+            description: 商品のID
+          name:
+            type: string
+            description: 商品の名前
+          price:
+            type: integer
+            description: 商品の値段
+          image_url:
+            type: string
+            description: 商品画像
+    OnlineStock:
+      type: object
+      description: オンライン上の商品の在庫
+      properties:
+        stock_quantity:
+          type: integer
+
       required:
         - name
         - address
