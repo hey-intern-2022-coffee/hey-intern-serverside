@@ -88,11 +88,11 @@ components:
         mail_address:
           type: string
           description: メールアドレス
-    PurchaseItems:
-      type: array
-      description: 購入した商品
-      properties:
-        items: {}
+        product_ids:
+          type: array
+          description: 購入した商品
+          items:
+            type: integer
     Purchase:
       type: object
       description: 購入する
