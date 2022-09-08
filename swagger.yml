@@ -61,6 +61,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Purchase"
+
 components:
   parameters:
     userId:
@@ -71,7 +72,7 @@ components:
       schema:
         type: integer
   schemas:
-    UserInfo: 
+    UserInfo:
       type: object
       description: ユーザー情報
       properties:
@@ -87,12 +88,11 @@ components:
         mail_address:
           type: string
           description: メールアドレス
-    PurchaseItems: 
+    PurchaseItems:
       type: array
       description: 購入した商品
       properties:
-        items: 
-          
+        items: {}
     Purchase:
       type: object
       description: 購入する
