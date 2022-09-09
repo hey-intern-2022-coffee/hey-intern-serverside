@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/infra"
+	"github.com/hey-intern-2022-coffee/hey-intern-serverside/config"
 )
 
 func main() {
@@ -19,7 +20,7 @@ func main() {
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
-			"http://localhost:3000",
+			config.Arrow(),
 		},
 		AllowMethods: []string{
 			"POST",
