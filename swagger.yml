@@ -38,7 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Purchase"
+                "$ref": "#/components/schemas/Products"
         '400':
           description: Bad request
         '500':
@@ -99,7 +99,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Products"
-  
 components:
   parameters:
     userId:
@@ -168,7 +167,6 @@ components:
       properties:
         stock_quantity:
           type: integer
-
       required:
         - name
         - address
