@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/hey-intern-2022-coffee/hey-intern-serverside/config"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/infra"
 )
 
@@ -33,5 +32,5 @@ func main() {
 	}))
 
 	r.GET("/", func(c *gin.Context) { c.String(http.StatusOK, "healthcheck success") })
-	r.Run(config.Port())
+	r.Run(":8080")
 }

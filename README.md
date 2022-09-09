@@ -11,3 +11,5 @@
     ビルドしたにDocker内でmake runが呼ばれます
   ### fmt
     go fmt を適用します
+  ### docker-run
+    Dockerを起動します
