@@ -99,6 +99,20 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Products"
+  /:
+    get:
+      summary: ヘルスチェック
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+
 components:
   parameters:
     userId:

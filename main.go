@@ -31,6 +31,10 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	r.GET("/", func(c *gin.Context) { c.String(http.StatusOK, "healthcheck success") })
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "OK",
+		})
+	})
 	r.Run(":8080")
 }
