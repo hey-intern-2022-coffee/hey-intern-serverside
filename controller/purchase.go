@@ -35,3 +35,21 @@ func (p *PurchaseController) Post(c *gin.Context, insert func(entity.Purchase) (
 
 	c.JSON(http.StatusCreated, res)
 }
+
+func(p *PurchaseController) PatchPurchase(c *gin.Context, patch func(int) (entity.Product, error)) {
+	var id int
+	if err := c.Bind(&id); err != nil {
+		p.logger.Error(err)
+		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
+		return
+	}
+
+	res, err := patch(id)
+	if err != nil {
+		p.logger.Error(err)
+		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
+}
