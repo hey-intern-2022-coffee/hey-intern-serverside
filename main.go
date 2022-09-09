@@ -3,7 +3,7 @@ package main
 import(
 	"net/http"
 
-	"github.com/hey-intern-2022-coffee/config"
+	
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -26,5 +26,4 @@ func main() {
 	}))
 
 	r.GET("/", func(c *gin.Context) { c.String(http.StatusOK, "healthcheck success") })
-	r.Run(config.Port())
 }
