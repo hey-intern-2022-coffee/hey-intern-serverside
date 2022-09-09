@@ -7,7 +7,7 @@ import (
 
 type OfflineStock struct {
 	gorm.Model
-	Id            int `json:"id" gorm:"index"`
+	ID            int `json:"id" gorm:"primaryKey"`
 	StockQuantity int `json:"stock_quantity"`
 	ProductId     int `json:"product_id"`
 }

@@ -7,7 +7,7 @@ import (
 
 type Product struct {
 	gorm.Model
-	Id       int    `json:"id" gorm:"index"`
+	ID       int    `json:"id" gorm:"primaryKey"`
 	Name     string `json:"name"`
 	Price    int    `json:"price"`
 	ImageURL string `json:"image_url"`

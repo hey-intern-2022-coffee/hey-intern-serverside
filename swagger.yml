@@ -99,6 +99,7 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Products"
+  
 components:
   parameters:
     userId:

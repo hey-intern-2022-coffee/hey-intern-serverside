@@ -7,10 +7,9 @@ import (
 
 type Purchase struct {
 	gorm.Model
-	Id           int    `json:"id" gorm:"index"`
+	ID           int    `json:"id" gorm:"primaryKey"`
 	Name         string `json:"name"`
 	Address      string `json:"address"`
 	PhoneNumber  string `json:"phone_number"`
 	IsAcceptance bool   `json:"is_acceptance"`
-	ProductIds   []int  `json:"product_ids"`
 }

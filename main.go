@@ -1,8 +1,8 @@
 package main
 
 import (
-	"os"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-
 	_, err := infra.NewDB()
 	if err != nil {
 		os.Exit(1)
