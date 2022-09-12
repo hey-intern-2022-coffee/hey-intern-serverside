@@ -13,6 +13,6 @@ func NewDB() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	db.AutoMigrate(&entity.Purchase{}, &entity.Product{}, &entity.OnlineStock{}, &entity.OfflineStock{})
+	db.AutoMigrate(&entity.Purchase{}, &entity.Product{}, &entity.OnlineStock{}, &entity.OfflineStock{}, &entity.PurchasesProducts{})
 	return db, nil
 }
