@@ -2,7 +2,6 @@ package infra
 
 import (
 	"gorm.io/gorm"
-
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
 )
 
@@ -41,17 +40,30 @@ func (p *PurchaseRepository) Insert(purchase *entity.Purchase) error {
 }
 
 func (p *PurchaseRepository) ToggleIsAcceptance(id int) (*entity.Purchase, error) {
-	var purchase *entity.Purchase
-	if result := p.DB.Model(&purchase).Where("id = ?", id).Update("is_acceptance", true); result.Error != nil {
+	var purchase entity.Purchase
+	if result := p.DB.First(&purchase, "id = ?", id).Update("is_acceptance", true); result.Error != nil {
 		return nil, result.Error
 	}
-	return purchase, nil
+	return &purchase, nil
 }
 
-func (p *PurchaseRepository) FindByProductID(id int) (*entity.Purchase, error) {
-	var purchase *entity.Purchase
-	if result := p.DB.Model(&purchase).Where("id = ?", id); result.Error != nil {
+func (p *PurchaseRepository) FindByPurchaseID(id int) (*entity.Purchase, error) {
+	tx := p.DB.Begin()
+
+	var purchase entity.Purchase
+	if result := tx.First(&purchase, "id = ?", id); result.Error != nil {
 		return nil, result.Error
 	}
-	return purchase, nil
+
+	var purchasesProducts []entity.PurchasesProducts
+	if result := tx.Find(&purchasesProducts, id); result.Error != nil {
+		return nil, result.Error
+	}
+
+	purchase.PurchasesProducts = purchasesProducts
+	if result := tx.Commit(); result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &purchase, nil
 }
