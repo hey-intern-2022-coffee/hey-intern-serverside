@@ -1,9 +1,9 @@
 package infra
 
 import (
-	"gorm.io/gorm"
 	"errors"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
+	"gorm.io/gorm"
 )
 
 type ProductRepository struct {
@@ -50,12 +50,14 @@ func (p *ProductRepository) FindAll() ([]entity.Product, error) {
 		id := product.ID
 		var stock entity.OnlineStock
 		if result := tx.First(&stock, "product_id = ?", id); result.Error != nil {
+			tx.Rollback()
 			return nil, result.Error
 		}
 		products[i].OnlineStock = stock
 	}
 
 	if result := tx.Commit(); result.Error != nil {
+		tx.Rollback()
 		return nil, result.Error
 	}
 
@@ -72,7 +74,8 @@ func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 	if result := tx.Model(&stock).First("product_id = ?", id); result.Error != nil {
 		return nil, result.Error
 	}
-	if stock.StockQuantity - 1 < 0 {
+	if stock.StockQuantity-1 < 0 {
+		tx.Rollback()
 		return nil, errors.New("stock is 0")
 	} else {
 		stock.StockQuantity--
@@ -81,6 +84,12 @@ func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 
 	var product entity.Product
 	if result := tx.Model(&product).First("id = ?", id); result.Error != nil {
+		tx.Rollback()
+		return nil, result.Error
+	}
+
+	if result := tx.Commit(); result.Error != nil {
+		tx.Rollback()
 		return nil, result.Error
 	}
 

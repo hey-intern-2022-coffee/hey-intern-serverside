@@ -5,7 +5,7 @@ import (
 )
 
 type Purchase struct {
-	ID                int                 `json:"id" gorm:"primaryKey"`
+	ID                int                 `json:"id" gorm:"primaryKey; autoIncrement"`
 	Name              string              `json:"name"`
 	Address           string              `json:"address"`
 	MailAddress       string              `json:"mail_address"`

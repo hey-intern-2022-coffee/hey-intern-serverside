@@ -1,8 +1,8 @@
 package infra
 
 import (
-	"gorm.io/gorm"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
+	"gorm.io/gorm"
 )
 
 type PurchaseRepository struct {
@@ -22,17 +22,12 @@ func (p *PurchaseRepository) Insert(purchase *entity.Purchase) error {
 	}
 
 	if result := tx.Create(&purchase); result.Error != nil {
+		tx.Rollback()
 		return result.Error
 	}
 
-	for _, v := range purchase.PurchasesProducts {
-		v.PurchaseID = purchase.ID
-		if result := tx.Create(&purchase); result.Error != nil {
-			return result.Error
-		}
-	}
-
 	if result := tx.Commit(); result.Error != nil {
+		tx.Rollback()
 		return result.Error
 	}
 
@@ -52,11 +47,13 @@ func (p *PurchaseRepository) FindByPurchaseID(id int) (*entity.Purchase, error) 
 
 	var purchase entity.Purchase
 	if result := tx.First(&purchase, "id = ?", id); result.Error != nil {
+		tx.Rollback()
 		return nil, result.Error
 	}
 
 	var purchasesProducts []entity.PurchasesProducts
 	if result := tx.Find(&purchasesProducts, id); result.Error != nil {
+		tx.Rollback()
 		return nil, result.Error
 	}
 

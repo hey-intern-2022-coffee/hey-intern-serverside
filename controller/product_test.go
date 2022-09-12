@@ -26,8 +26,8 @@ func TestProductPost(t *testing.T) {
 		}
 	}`
 	want := entity.Product{
-		Name: "string",
-		Price: 0,
+		Name:     "string",
+		Price:    0,
 		ImageURL: "string",
 		OnlineStock: entity.OnlineStock{
 			StockQuantity: 0,
