@@ -18,7 +18,7 @@ func NewProductController(logger *log.Logger) *ProductController {
 	}
 }
 
-func (p *ProductController) Post(c *gin.Context, insert func(*entity.Product)error) {
+func (p *ProductController) Post(c *gin.Context, insert func(*entity.Product) error) {
 	var product entity.Product
 	if err := c.ShouldBindJSON(&product); err != nil {
 		p.logger.Error(err)
@@ -35,7 +35,7 @@ func (p *ProductController) Post(c *gin.Context, insert func(*entity.Product)err
 	c.JSON(http.StatusOK, product)
 }
 
-func (p *ProductController) GetAll(c *gin.Context, find func()([]entity.Product, error)) {
+func (p *ProductController) GetAll(c *gin.Context, find func() ([]entity.Product, error)) {
 	res, err := find()
 	if err != nil {
 		p.logger.Error(err)
@@ -46,7 +46,7 @@ func (p *ProductController) GetAll(c *gin.Context, find func()([]entity.Product,
 	c.JSON(http.StatusOK, res)
 }
 
-func(p *ProductController) PatchPurchase(c *gin.Context, patch func(int) (entity.Product, error)) {
+func (p *ProductController) PatchPurchase(c *gin.Context, patch func(int) (entity.Product, error)) {
 	var id int
 	if err := c.Bind(&id); err != nil {
 		p.logger.Error(err)

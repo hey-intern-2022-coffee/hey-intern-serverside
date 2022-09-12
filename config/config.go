@@ -12,7 +12,7 @@ func Port() string {
 
 func Arrow() string {
 	arrow := os.Getenv("ARROW")
-	if arrow  == "" {
+	if arrow == "" {
 		return "http://127.0.0.1`"
 	}
 	return arrow

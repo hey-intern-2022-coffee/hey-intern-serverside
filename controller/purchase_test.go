@@ -2,14 +2,14 @@ package controller_test
 
 import (
 	"bytes"
-	"testing"
 	"encoding/json"
-	"net/http/httptest"
-	"github.com/google/go-cmp/cmp"
 	"github.com/gin-gonic/gin"
+	"github.com/google/go-cmp/cmp"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/controller"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/log"
+	"net/http/httptest"
+	"testing"
 )
 
 func TestPurchasePost(t *testing.T) {
@@ -25,9 +25,9 @@ func TestPurchasePost(t *testing.T) {
 			"product_id": 1
 		}]
 	}`
-	want := entity.Purchase {
-		Name: "string",
-		Address: "string",
+	want := entity.Purchase{
+		Name:        "string",
+		Address:     "string",
 		MailAddress: "string",
 		PurchasesProducts: []entity.PurchasesProducts{
 			{

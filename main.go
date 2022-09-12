@@ -6,10 +6,10 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/hey-intern-2022-coffee/hey-intern-serverside/infra"
-	"github.com/hey-intern-2022-coffee/hey-intern-serverside/controller"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/config"
+	"github.com/hey-intern-2022-coffee/hey-intern-serverside/controller"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
+	"github.com/hey-intern-2022-coffee/hey-intern-serverside/infra"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/log"
 )
 

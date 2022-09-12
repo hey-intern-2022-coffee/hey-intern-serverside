@@ -8,12 +8,13 @@ import (
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
 	"github.com/labstack/gommon/log"
 )
+
 type PurchaseController struct {
 	logger *log.Logger
 }
 
 func NewPurchaseController(logger *log.Logger) *PurchaseController {
-	return &PurchaseController {
+	return &PurchaseController{
 		logger: logger,
 	}
 }
@@ -36,7 +37,7 @@ func (p *PurchaseController) Post(c *gin.Context, insert func(*entity.Purchase) 
 	c.JSON(http.StatusCreated, purchase)
 }
 
-func (p *PurchaseController) PutToggle(c *gin.Context, find func(int)(entity.Purchase, error)) {
+func (p *PurchaseController) PutToggle(c *gin.Context, find func(int) (entity.Purchase, error)) {
 	var id int
 	if err := c.Bind(&id); err != nil {
 		p.logger.Error(err)
