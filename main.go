@@ -55,7 +55,7 @@ func main() {
 		productCtrl.PatchPurchase(c, productRepo.PatchPurchase)
 	})
 
-	r.PUT("/purchase", func(ctx *gin.Context) {
+	r.PATCH("/purchase/delivered", func(ctx *gin.Context) {
 		purchaseCtrl.PutToggle(ctx, purchaseRepo.ToggleIsAcceptance)
 	})
 

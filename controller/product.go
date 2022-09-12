@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
 	"github.com/labstack/gommon/log"
@@ -47,14 +46,14 @@ func (p *ProductController) GetAll(c *gin.Context, find func() ([]entity.Product
 }
 
 func (p *ProductController) PatchPurchase(c *gin.Context, patch func(int) (*entity.Product, error)) {
-	var id int
-	if err := c.Bind(&id); err != nil {
+	var product entity.Product
+	if err := c.ShouldBindJSON(&product); err != nil {
 		p.logger.Error(err)
 		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
 		return
 	}
 
-	res, err := patch(id)
+	res, err := patch(product.ID)
 	if err != nil {
 		p.logger.Error(err)
 		c.AbortWithError(http.StatusInternalServerError, c.Error(err))

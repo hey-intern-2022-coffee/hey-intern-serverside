@@ -30,8 +30,11 @@ paths:
         content:
           application/json:
             schema:
-              type: integer
-              format: int64
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: ProductsのID
       responses:
         '200':
           description: successful
@@ -43,14 +46,18 @@ paths:
           description: Bad request
         '500':
           description: Internal server error
-    put:
+  /purchase/delivered:
+    patch:
       summary: 商品引き渡した状態にする
       requestBody:
         content:
           application/json:
             schema:
-              type: integer
-              format: int64
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: purchaseのID
       responses:
         '200':
           description: successful
