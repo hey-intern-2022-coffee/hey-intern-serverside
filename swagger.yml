@@ -43,6 +43,21 @@ paths:
           description: Bad request
         '500':
           description: Internal server error
+    put:
+      summary: 商品引き渡した状態にする
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Purchase"
 
   /purchase/{purchases_id}:
     get:
@@ -68,14 +83,14 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/Products"
+              "$ref": "#/components/schemas/OnlineProducts"
       responses:
         '201':
           description: created products
           content:
            application/json:
             schema:
-              "$ref": "#/components/schemas/Products"
+              "$ref": "#/components/schemas/OnlineProducts"
     get:
       summary: 商品の一覧取得する
       responses:
@@ -86,7 +101,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Products"
+                  "$ref": "#/components/schemas/OnlineProducts"
   /onlinestore/allproducts:
     get:
       summary: オンラインショップ側の商品一覧を取得する
@@ -98,7 +113,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Products"
+                  "$ref": "#/components/schemas/OnlineProducts"
   /:
     get:
       summary: ヘルスチェック
@@ -139,11 +154,20 @@ components:
         mail_address:
           type: string
           description: メールアドレス
-        product_ids:
+        purchases_products:
           type: array
           description: 購入した商品
           items:
-            type: integer
+            type: object
+            allOf:
+            - "$ref": "#/components/schemas/PurchasesProducts"
+    PurchasesProducts:
+      type: object
+      description: 商品IDを関連付ける
+      properties:
+        product_id:
+          description: 商品ID
+          type: integer
     Purchase:
       type: object
       description: 購入する
@@ -157,12 +181,21 @@ components:
             type: boolean
             default: false
             description: 受け取ったかどうか
+    OnlineProducts:
+      type: object
+      allOf:
+        - "$ref": "#/components/schemas/Products"
+        - properties:
+            online_stock:
+              type: object
+              properties:
+                stock_quantity:
+                  description: オンライン商品の在庫
+                  type: integer
     Products:
       type: object
       description: 登録された商品
-      allOf:
-      - "$ref": "#/components/schemas/OnlineStock"
-      - properties:
+      properties:
           id:
             type: integer
             description: 商品のID
@@ -175,12 +208,6 @@ components:
           image_url:
             type: string
             description: 商品画像
-    OnlineStock:
-      type: object
-      description: オンライン上の商品の在庫
-      properties:
-        stock_quantity:
-          type: integer
       required:
         - name
         - address

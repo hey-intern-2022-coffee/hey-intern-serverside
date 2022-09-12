@@ -10,6 +10,7 @@ type Purchase struct {
 	ID           int    `json:"id" gorm:"primaryKey"`
 	Name         string `json:"name"`
 	Address      string `json:"address"`
-	PhoneNumber  string `json:"phone_number"`
+	MailAddress  string `json:"mail_address"`
 	IsAcceptance bool   `json:"is_acceptance"`
+	PurchasesProducts []PurchasesProducts `json:"purchases_products"`
 }
