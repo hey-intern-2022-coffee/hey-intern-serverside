@@ -37,7 +37,7 @@ func (p *PurchaseController) Post(c *gin.Context, insert func(*entity.Purchase) 
 	c.JSON(http.StatusCreated, purchase)
 }
 
-func (p *PurchaseController) PutToggle(c *gin.Context, find func(int) (entity.Purchase, error)) {
+func (p *PurchaseController) PutToggle(c *gin.Context, find func(int) (*entity.Purchase, error)) {
 	var id int
 	if err := c.Bind(&id); err != nil {
 		p.logger.Error(err)
@@ -55,7 +55,7 @@ func (p *PurchaseController) PutToggle(c *gin.Context, find func(int) (entity.Pu
 	c.JSON(http.StatusOK, res)
 }
 
-func (p *PurchaseController) GetProductsOne(c *gin.Context, find func(int) (entity.Purchase, error)) {
+func (p *PurchaseController) GetProductsOne(c *gin.Context, find func(int) (*entity.Purchase, error)) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		p.logger.Error(err)

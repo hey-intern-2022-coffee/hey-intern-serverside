@@ -8,16 +8,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/config"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/controller"
-	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/infra"
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/log"
 )
 
 func main() {
-	_, err := infra.NewDB()
+	db, err := infra.NewDB()
 	if err != nil {
 		os.Exit(1)
 	}
+
+	productRepo := infra.NewProductRepository(db)
+	purchaseRepo := infra.NewPurchaseRepository(db)
 
 	log := log.New()
 	purchaseCtrl := controller.NewPurchaseController(log)
@@ -46,45 +48,31 @@ func main() {
 	})
 
 	r.POST("/purchase", func(ctx *gin.Context) {
-		purchaseCtrl.Post(ctx, func(p *entity.Purchase) error {
-			return nil
-		})
+		purchaseCtrl.Post(ctx, purchaseRepo.Insert)
 	})
 
 	r.PATCH("/purchase", func(c *gin.Context) {
-		productCtrl.PatchPurchase(c, func(i int) (entity.Product, error) {
-			return entity.Product{}, nil
-		})
+		productCtrl.PatchPurchase(c, productRepo.PatchPurchase)
 	})
 
 	r.PUT("/purchase", func(ctx *gin.Context) {
-		purchaseCtrl.PutToggle(ctx, func(i int) (entity.Purchase, error) {
-			return entity.Purchase{}, nil
-		})
+		purchaseCtrl.PutToggle(ctx, purchaseRepo.ToggleIsAcceptance)
 	})
 
 	r.GET("/purchase/:id", func(ctx *gin.Context) {
-		purchaseCtrl.GetProductsOne(ctx, func(i int) (entity.Purchase, error) {
-			return entity.Purchase{}, nil
-		})
+		purchaseCtrl.GetProductsOne(ctx, purchaseRepo.FindByProductID)
 	})
 
 	r.POST("/product", func(ctx *gin.Context) {
-		productCtrl.Post(ctx, func(p *entity.Product) error {
-			return nil
-		})
+		productCtrl.Post(ctx, productRepo.Insert)
 	})
 
 	r.GET("/products", func(ctx *gin.Context) {
-		productCtrl.GetAll(ctx, func() ([]entity.Product, error) {
-			return []entity.Product{}, nil
-		})
+		productCtrl.GetAll(ctx, productRepo.FindAll)
 	})
 
 	r.GET("/onlinestore/allproducts", func(ctx *gin.Context) {
-		productCtrl.GetAll(ctx, func() ([]entity.Product, error) {
-			return []entity.Product{}, nil
-		})
+		productCtrl.GetAll(ctx, productRepo.FindAll)
 	})
 
 	r.Run(":8080")
