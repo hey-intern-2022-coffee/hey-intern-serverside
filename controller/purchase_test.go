@@ -70,7 +70,7 @@ func TestPurchasePutToggle(t *testing.T) {
 	}
 }
 
-func TestPurchaseGetProductsOne(t *testing.T) {
+func TestPurchaseGetPurchaseOne(t *testing.T) {
 	log := log.New()
 	purchaseCtrl := controller.NewPurchaseController(log)
 	w := httptest.NewRecorder()
