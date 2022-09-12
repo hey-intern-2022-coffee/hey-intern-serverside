@@ -61,29 +61,29 @@ func main() {
 		purchaseCtrl.PutToggle(ctx, func(i int) (entity.Purchase, error) {
 			return entity.Purchase{}, nil
 		})
+	})
 
-		r.GET("/purchase/:id", func(ctx *gin.Context) {
-			purchaseCtrl.GetProductsOne(ctx, func(i int) (entity.Purchase, error) {
-				return entity.Purchase{}, nil
-			})
+	r.GET("/purchase/:id", func(ctx *gin.Context) {
+		purchaseCtrl.GetProductsOne(ctx, func(i int) (entity.Purchase, error) {
+			return entity.Purchase{}, nil
 		})
+	})
 
-		r.POST("/product", func(ctx *gin.Context) {
-			productCtrl.Post(ctx, func(p *entity.Product) error {
-				return nil
-			})
+	r.POST("/product", func(ctx *gin.Context) {
+		productCtrl.Post(ctx, func(p *entity.Product) error {
+			return nil
 		})
+	})
 
-		r.GET("/products", func(ctx *gin.Context) {
-			productCtrl.GetAll(ctx, func() ([]entity.Product, error) {
-				return []entity.Product{}, nil
-			})
+	r.GET("/products", func(ctx *gin.Context) {
+		productCtrl.GetAll(ctx, func() ([]entity.Product, error) {
+			return []entity.Product{}, nil
 		})
+	})
 
-		r.GET("/onlinestore/allproducts", func(ctx *gin.Context) {
-			productCtrl.GetAll(ctx, func() ([]entity.Product, error) {
-				return []entity.Product{}, nil
-			})
+	r.GET("/onlinestore/allproducts", func(ctx *gin.Context) {
+		productCtrl.GetAll(ctx, func() ([]entity.Product, error) {
+			return []entity.Product{}, nil
 		})
 	})
 
