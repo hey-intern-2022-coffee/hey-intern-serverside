@@ -83,7 +83,7 @@ func TestPurchaseGetProductsOne(t *testing.T) {
 	}
 
 	context.Request = httptest.NewRequest("GET", "/", nil)
-	purchaseCtrl.GetProductsOne(context, func(i int) (*entity.Purchase, error) {
+	purchaseCtrl.GetPurchaseOne(context, func(i int) (*entity.Purchase, error) {
 		return &entity.Purchase{}, nil
 	})
 

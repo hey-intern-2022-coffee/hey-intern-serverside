@@ -60,7 +60,7 @@ func main() {
 	})
 
 	r.GET("/purchase/:id", func(ctx *gin.Context) {
-		purchaseCtrl.GetProductsOne(ctx, purchaseRepo.FindByPurchaseID)
+		purchaseCtrl.GetPurchaseOne(ctx, purchaseRepo.FindByPurchaseID)
 	})
 
 	r.POST("/product", func(ctx *gin.Context) {
