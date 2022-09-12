@@ -17,14 +17,7 @@ func TestProductPost(t *testing.T) {
 	productCtrl := controller.NewProductController(log)
 	w := httptest.NewRecorder()
 	context, _ := gin.CreateTestContext(w)
-	reqBody := `{
-		"name":"string",
-		"price":0,
-		"image_url": "string",
-		"online_stock": {
-			"stock_quantity": 0
-		}
-	}`
+	reqBody := `{"name":"string","price":0,"image_url": "string","online_stock": {"stock_quantity": 0}}`
 	want := entity.Product{
 		Name:     "string",
 		Price:    0,
@@ -75,10 +68,15 @@ func TestProductPatchPurchase(t *testing.T) {
 	productCtrl := controller.NewProductController(log)
 	w := httptest.NewRecorder()
 	context, _ := gin.CreateTestContext(w)
-	reqBody := `1`
+	reqBody := `{
+		"id":1
+	}`
 	context.Request = httptest.NewRequest("POST", "/", bytes.NewBufferString(reqBody))
 
 	productCtrl.PatchPurchase(context, func(i int) (*entity.Product, error) {
+		if i != 1 {
+			t.Errorf("mismatch %v", i)
+		}
 		return &entity.Product{}, nil
 	})
 

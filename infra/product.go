@@ -74,12 +74,12 @@ func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 	if result := tx.Model(&stock).First("product_id = ?", id); result.Error != nil {
 		return nil, result.Error
 	}
-	if stock.StockQuantity-1 < 0 {
+	if stock.StockQuantity < 1 {
 		tx.Rollback()
 		return nil, errors.New("stock is 0")
 	} else {
 		stock.StockQuantity--
-		tx.Save(stock)
+		tx.Save(&stock)
 	}
 
 	var product entity.Product

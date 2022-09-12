@@ -38,14 +38,14 @@ func (p *PurchaseController) Post(c *gin.Context, insert func(*entity.Purchase) 
 }
 
 func (p *PurchaseController) PutToggle(c *gin.Context, find func(int) (*entity.Purchase, error)) {
-	var id int
-	if err := c.Bind(&id); err != nil {
+	var purchase entity.Purchase
+	if err := c.ShouldBindJSON(&purchase); err != nil {
 		p.logger.Error(err)
 		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
 		return
 	}
 
-	res, err := find(id)
+	res, err := find(purchase.ID)
 	if err != nil {
 		p.logger.Error(err)
 		c.AbortWithError(http.StatusInternalServerError, c.Error(err))

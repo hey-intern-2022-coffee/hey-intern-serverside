@@ -48,11 +48,13 @@ func TestPurchasePutToggle(t *testing.T) {
 	purchaseCtrl := controller.NewPurchaseController(log)
 	w := httptest.NewRecorder()
 	context, _ := gin.CreateTestContext(w)
-	reqBody := `1`
+	reqBody := `{
+		"id": 1
+	}`
 
 	context.Request = httptest.NewRequest("POST", "/", bytes.NewBufferString(reqBody))
 	purchaseCtrl.PutToggle(context, func(i int) (*entity.Purchase, error) {
-		if i == 1 {
+		if i != 1 {
 			t.Error("PutToggle should return")
 		}
 		return &entity.Purchase{}, nil
