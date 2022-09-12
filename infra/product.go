@@ -49,7 +49,7 @@ func (p *ProductRepository) FindAll() ([]entity.Product, error) {
 	for i, product := range products {
 		id := product.ID
 		var stock entity.OnlineStock
-		if result := tx.Model(&stock).First("product_id = ?", id); result.Error != nil {
+		if result := tx.First(&stock, "product_id = ?", id); result.Error != nil {
 			return nil, result.Error
 		}
 		products[i].OnlineStock = stock
