@@ -17,14 +17,7 @@ func TestPurchasePost(t *testing.T) {
 	purchaseCtrl := controller.NewPurchaseController(log)
 	w := httptest.NewRecorder()
 	context, _ := gin.CreateTestContext(w)
-	reqBody := `{
-		"name": "string",
-		"address": "string",
-		"mail_address": "string",
-		"purchases_products":[{
-			"product_id": 1
-		}]
-	}`
+	reqBody := `{"name": "string","address": "string","mail_address": "string","purchases_products":[{"product_id": 1}]}`
 	want := entity.Purchase{
 		Name:        "string",
 		Address:     "string",
@@ -82,7 +75,7 @@ func TestPurchaseGetProductsOne(t *testing.T) {
 	context, _ := gin.CreateTestContext(w)
 	context.Params = gin.Params{
 		gin.Param{
-			Key: "id",
+			Key:   "id",
 			Value: "1",
 		},
 	}
@@ -91,7 +84,6 @@ func TestPurchaseGetProductsOne(t *testing.T) {
 	purchaseCtrl.GetProductsOne(context, func(i int) (*entity.Purchase, error) {
 		return &entity.Purchase{}, nil
 	})
-
 
 	var got entity.Purchase
 	if err := json.Unmarshal(w.Body.Bytes(), &got); err != nil {
