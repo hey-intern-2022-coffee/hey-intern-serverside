@@ -49,3 +49,56 @@ func TestPurchasePost(t *testing.T) {
 		t.Errorf("Create (-want +got) =\n%s\n", diff)
 	}
 }
+
+func TestPurchasePutToggle(t *testing.T) {
+	log := log.New()
+	purchaseCtrl := controller.NewPurchaseController(log)
+	w := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(w)
+	reqBody := `1`
+
+	context.Request = httptest.NewRequest("POST", "/", bytes.NewBufferString(reqBody))
+	purchaseCtrl.PutToggle(context, func(i int) (entity.Purchase, error) {
+		if i == 1 {
+			t.Error("PutToggle should return")
+		}
+		return entity.Purchase{}, nil
+	})
+
+	var got entity.Purchase
+	if err := json.Unmarshal(w.Body.Bytes(), &got); err != nil {
+		t.Error(err.Error())
+	}
+
+	if diff := cmp.Diff(got, entity.Purchase{}); diff != "" {
+		t.Errorf("Create (-want +got) =\n%s\n", diff)
+	}
+}
+
+func TestPurchaseGetProductsOne(t *testing.T) {
+	log := log.New()
+	purchaseCtrl := controller.NewPurchaseController(log)
+	w := httptest.NewRecorder()
+	context, _ := gin.CreateTestContext(w)
+	context.Params = gin.Params{
+		gin.Param{
+			Key: "id",
+			Value: "1",
+		},
+	}
+
+	context.Request = httptest.NewRequest("GET", "/", nil)
+	purchaseCtrl.GetProductsOne(context, func(i int) (entity.Purchase, error) {
+		return entity.Purchase{}, nil
+	})
+
+
+	var got entity.Purchase
+	if err := json.Unmarshal(w.Body.Bytes(), &got); err != nil {
+		t.Error(err.Error())
+	}
+
+	if diff := cmp.Diff(got, entity.Purchase{}); diff != "" {
+		t.Errorf("Create (-want +got) =\n%s\n", diff)
+	}
+}

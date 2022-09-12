@@ -66,7 +66,7 @@ func (p *PurchaseController) GetProductsOne(c *gin.Context, find func(int) (enti
 	res, err := find(id)
 	if err != nil {
 		p.logger.Error(err)
-		c.Copy().AbortWithError(http.StatusInternalServerError, c.Error(err))
+		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
 		return
 	}
 
