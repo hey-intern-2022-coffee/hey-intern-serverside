@@ -58,11 +58,11 @@ func TestPurchasePutToggle(t *testing.T) {
 	reqBody := `1`
 
 	context.Request = httptest.NewRequest("POST", "/", bytes.NewBufferString(reqBody))
-	purchaseCtrl.PutToggle(context, func(i int) (entity.Purchase, error) {
+	purchaseCtrl.PutToggle(context, func(i int) (*entity.Purchase, error) {
 		if i == 1 {
 			t.Error("PutToggle should return")
 		}
-		return entity.Purchase{}, nil
+		return &entity.Purchase{}, nil
 	})
 
 	var got entity.Purchase
@@ -88,8 +88,8 @@ func TestPurchaseGetProductsOne(t *testing.T) {
 	}
 
 	context.Request = httptest.NewRequest("GET", "/", nil)
-	purchaseCtrl.GetProductsOne(context, func(i int) (entity.Purchase, error) {
-		return entity.Purchase{}, nil
+	purchaseCtrl.GetProductsOne(context, func(i int) (*entity.Purchase, error) {
+		return &entity.Purchase{}, nil
 	})
 
 

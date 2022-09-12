@@ -46,7 +46,7 @@ func (p *ProductController) GetAll(c *gin.Context, find func() ([]entity.Product
 	c.JSON(http.StatusOK, res)
 }
 
-func (p *ProductController) PatchPurchase(c *gin.Context, patch func(int) (entity.Product, error)) {
+func (p *ProductController) PatchPurchase(c *gin.Context, patch func(int) (*entity.Product, error)) {
 	var id int
 	if err := c.Bind(&id); err != nil {
 		p.logger.Error(err)

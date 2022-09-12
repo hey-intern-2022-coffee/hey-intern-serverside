@@ -78,8 +78,8 @@ func TestProductPatchPurchase(t *testing.T) {
 	reqBody := `1`
 	context.Request = httptest.NewRequest("POST", "/", bytes.NewBufferString(reqBody))
 
-	productCtrl.PatchPurchase(context, func(i int) (entity.Product, error) {
-		return entity.Product{}, nil
+	productCtrl.PatchPurchase(context, func(i int) (*entity.Product, error) {
+		return &entity.Product{}, nil
 	})
 
 	var got entity.Product
