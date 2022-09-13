@@ -29,6 +29,8 @@ func main() {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
 			config.Arrow(),
+			"https://stores-coffee-manager.netlify.app",
+			"https://stores-coffee.netlify.app",
 		},
 		AllowMethods: []string{
 			"POST",
