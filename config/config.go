@@ -7,7 +7,11 @@ func DSN() string {
 }
 
 func Port() string {
-	return ":" + os.Getenv("PORT")
+	port := os.Getenv("PORT")
+	if port == "" {
+		return ":8080"
+	}
+	return ":" + port
 }
 
 func Arrow() string {
