@@ -69,6 +69,10 @@ func main() {
 		productCtrl.Post(ctx, productRepo.Insert)
 	})
 
+	r.PUT("/product", func(ctx *gin.Context) {
+		productCtrl.Update(ctx, productRepo.Update)
+	})
+
 	r.DELETE("/product", func(ctx *gin.Context) {
 		productCtrl.Delete(ctx, productRepo.Delete)
 	})

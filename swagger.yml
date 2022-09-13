@@ -24,6 +24,21 @@ paths:
           description: Bad request
         '500':
           description: Internal server error
+    put:
+      summary: 商品の編集をする
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OnlineProducts"
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OnlineProducts"
     patch:
       summary: 購入IDに紐づいた商品の在庫を1減らす
       requestBody:

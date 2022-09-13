@@ -37,6 +37,30 @@ func (p *ProductRepository) Insert(product *entity.Product) error {
 	return nil
 }
 
+func (p *ProductRepository) Update(product *entity.Product) error {
+	tx := p.DB.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	if result := tx.Save(&product); result.Error != nil {
+		tx.Rollback()
+		return result.Error
+	}
+
+	if result := tx.Save(&product.OnlineStock); result.Error != nil {
+		tx.Rollback()
+		return result.Error
+	}
+
+	if result := tx.Commit(); result.Error != nil {
+		tx.Rollback()
+		return result.Error
+	}
+
+	return nil
+}
+
 func (p *ProductRepository) Delete(product *entity.Product) error {
 	if result := p.DB.Delete(&product); result.Error != nil {
 		return result.Error

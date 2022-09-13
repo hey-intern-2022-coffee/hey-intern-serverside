@@ -36,6 +36,23 @@ func (p *ProductController) Post(c *gin.Context, insert func(*entity.Product) er
 	c.JSON(http.StatusOK, product)
 }
 
+func (p *ProductController) Update(c *gin.Context, update func(*entity.Product) error) {
+	var product entity.Product
+	if err := c.ShouldBindJSON(&product); err != nil {
+		p.logger.Error(err)
+		c.AbortWithError(http.StatusBadRequest, c.Error(err))
+		return
+	}
+
+	if err := update(&product); err != nil {
+		p.logger.Error(err)
+		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, product)
+}
+
 func (p *ProductController) Delete(c *gin.Context, delete func(*entity.Product) error) {
 	var product entity.Product
 	if err := c.ShouldBindJSON(&product); err != nil {
