@@ -2,6 +2,7 @@ package infra
 
 import (
 	"errors"
+
 	"github.com/hey-intern-2022-coffee/hey-intern-serverside/domain/entity"
 	"gorm.io/gorm"
 )
@@ -48,10 +49,12 @@ func (p *ProductRepository) Update(product *entity.Product) error {
 		return result.Error
 	}
 
-	if result := tx.Save(&product.OnlineStock); result.Error != nil {
+	var stock entity.OnlineStock
+	if result := tx.First(&stock,"product_id = ?", product.ID).Update("stock_quantity", product.OnlineStock.StockQuantity); result.Error != nil {
 		tx.Rollback()
 		return result.Error
 	}
+	product.OnlineStock = stock
 
 	if result := tx.Commit(); result.Error != nil {
 		tx.Rollback()
