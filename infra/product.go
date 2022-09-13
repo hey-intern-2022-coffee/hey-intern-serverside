@@ -37,6 +37,14 @@ func (p *ProductRepository) Insert(product *entity.Product) error {
 	return nil
 }
 
+func (p *ProductRepository) Delete(product *entity.Product) error {
+	if result := p.DB.Delete(&product); result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
 func (p *ProductRepository) FindAll() ([]entity.Product, error) {
 	tx := p.DB.Begin()
 	if tx.Error != nil {

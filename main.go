@@ -69,6 +69,10 @@ func main() {
 		productCtrl.Post(ctx, productRepo.Insert)
 	})
 
+	r.DELETE("/product", func(ctx *gin.Context) {
+		productCtrl.Delete(ctx, productRepo.Delete)
+	})
+
 	r.GET("/products", func(ctx *gin.Context) {
 		productCtrl.GetAll(ctx, productRepo.FindAll)
 	})
