@@ -75,5 +75,9 @@ func main() {
 		productCtrl.GetAll(ctx, productRepo.FindAll)
 	})
 
+	r.GET("/products/:id", func(ctx *gin.Context) {
+		productCtrl.GetOne(ctx, productRepo.FindIdOne)
+	})
+
 	r.Run(":8080")
 }

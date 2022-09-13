@@ -109,6 +109,23 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/OnlineProducts"
+  /products/{id}:
+    get:
+      summary: 商品をIDで取得する
+      parameters:
+        - name: purchases_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OnlineProducts"
   /onlinestore/allproducts:
     get:
       summary: オンラインショップ側の商品一覧を取得する

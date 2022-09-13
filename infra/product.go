@@ -64,6 +64,33 @@ func (p *ProductRepository) FindAll() ([]entity.Product, error) {
 	return products, nil
 }
 
+func (p *ProductRepository) FindIdOne(id int) (*entity.Product, error) {
+	tx := p.DB.Begin()
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	var stock entity.OnlineStock
+	if result := tx.First(&stock, "product_id = ?", id); result.Error != nil {
+		tx.Rollback()
+		return nil, result.Error
+	}
+
+	var product entity.Product
+	if result := tx.First(&product, "id = ?", id); result.Error != nil {
+		tx.Rollback()
+		return nil, result.Error
+	}
+
+	if result := tx.Commit(); result.Error != nil {
+		tx.Rollback()
+		return nil, result.Error
+	}
+
+	product.OnlineStock = stock
+	return &product, nil
+}
+
 func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 	tx := p.DB.Begin()
 	if tx.Error != nil {
@@ -71,7 +98,7 @@ func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 	}
 
 	var stock entity.OnlineStock
-	if result := tx.Model(&stock).First("product_id = ?", id); result.Error != nil {
+	if result := tx.First(&stock,"product_id = ?", id); result.Error != nil {
 		return nil, result.Error
 	}
 	if stock.StockQuantity < 1 {
@@ -83,7 +110,7 @@ func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 	}
 
 	var product entity.Product
-	if result := tx.Model(&product).First("id = ?", id); result.Error != nil {
+	if result := tx.First(&product, "id = ?", id); result.Error != nil {
 		tx.Rollback()
 		return nil, result.Error
 	}
