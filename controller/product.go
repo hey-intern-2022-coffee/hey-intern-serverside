@@ -99,15 +99,15 @@ func (p *ProductController) GetAll(c *gin.Context, find func() ([]entity.Product
 	c.JSON(http.StatusOK, res)
 }
 
-func (p *ProductController) PatchPurchase(c *gin.Context, patch func(int) (*entity.Product, error)) {
-	var product entity.Product
-	if err := c.ShouldBindJSON(&product); err != nil {
+func (p *ProductController) PatchPurchase(c *gin.Context, patch func(int) ([]entity.PurchasesProducts, error)) {
+	var purchase entity.Purchase
+	if err := c.ShouldBindJSON(&purchase); err != nil {
 		p.logger.Error(err)
 		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
 		return
 	}
 
-	res, err := patch(product.ID)
+	res, err := patch(purchase.ID)
 	if err != nil {
 		p.logger.Error(err)
 		c.AbortWithError(http.StatusInternalServerError, c.Error(err))

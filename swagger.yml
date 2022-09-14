@@ -41,7 +41,16 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Products"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    product_id:
+                      type: integer
+                    purchases_id:
+                      type: integer
         '400':
           description: Bad request
         '500':

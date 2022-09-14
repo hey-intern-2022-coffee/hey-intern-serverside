@@ -132,32 +132,35 @@ func (p *ProductRepository) FindIdOne(id int) (*entity.Product, error) {
 	return &product, nil
 }
 
-func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
+func (p *ProductRepository) PatchPurchase(id int) ([]entity.PurchasesProducts, error) {
 	tx := p.DB.Begin()
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
 
-	var stock entity.OnlineStock
-	if result := tx.First(&stock, "product_id = ?", id); result.Error != nil {
-		tx.Rollback()
-		return nil, result.Error
-	}
-	if stock.DeliveredQuantity < 1 {
-		tx.Rollback()
-		return nil, errors.New("stock is 0")
-	}
-
-	stock.DeliveredQuantity--
-	if result := tx.Model(&stock).Update("delivered_quantity", stock.DeliveredQuantity); result.Error != nil {
+	var purchasesProducts []entity.PurchasesProducts
+	if result := tx.Where("purchase_id = ?", id).Find(&purchasesProducts); result.Error != nil {
 		tx.Rollback()
 		return nil, result.Error
 	}
 
-	var product entity.Product
-	if result := tx.First(&product, "id = ?", id); result.Error != nil {
-		tx.Rollback()
-		return nil, result.Error
+	for _, v := range purchasesProducts {
+		var stock entity.OnlineStock
+		if result := tx.First(&stock, "product_id = ?", v.ProductID); result.Error != nil {
+			tx.Rollback()
+			return nil, result.Error
+		}
+
+		stock.DeliveredQuantity--
+		if stock.DeliveredQuantity < 0 {
+			tx.Rollback()
+			return nil, errors.New("delivered quantity is negative")
+		}
+
+		if result := tx.Model(&stock).Where("id = ?", stock.ID).Update("delivered_quantity", stock.DeliveredQuantity); result.Error != nil {
+			tx.Rollback()
+			return nil, result.Error
+		}
 	}
 
 	if result := tx.Commit(); result.Error != nil {
@@ -165,6 +168,5 @@ func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 		return nil, result.Error
 	}
 
-	product.OnlineStock = stock
-	return &product, nil
+	return purchasesProducts, nil
 }

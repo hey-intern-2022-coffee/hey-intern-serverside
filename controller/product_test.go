@@ -73,19 +73,16 @@ func TestProductPatchPurchase(t *testing.T) {
 	}`
 	context.Request = httptest.NewRequest("POST", "/", bytes.NewBufferString(reqBody))
 
-	productCtrl.PatchPurchase(context, func(i int) (*entity.Product, error) {
-		if i != 1 {
-			t.Errorf("mismatch %v", i)
-		}
-		return &entity.Product{}, nil
+	productCtrl.PatchPurchase(context, func(i int) ([]entity.PurchasesProducts, error) {
+		return []entity.PurchasesProducts{}, nil
 	})
 
-	var got entity.Product
+	var got []entity.PurchasesProducts
 	if err := json.Unmarshal(w.Body.Bytes(), &got); err != nil {
 		t.Error(err.Error())
 	}
 
-	if diff := cmp.Diff(got, entity.Product{}); diff != "" {
+	if diff := cmp.Diff(got, []entity.PurchasesProducts{}); diff != "" {
 		t.Errorf("Create (-want +got) =\n%s\n", diff)
 	}
 }
