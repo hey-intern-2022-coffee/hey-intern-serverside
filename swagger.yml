@@ -240,6 +240,9 @@ components:
             online_stock:
               type: object
               properties:
+                sold_quantity:
+                  description: 売れた商品の在庫
+                  type: integer
                 stock_quantity:
                   description: オンライン商品の在庫
                   type: integer

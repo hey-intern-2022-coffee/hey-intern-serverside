@@ -26,6 +26,20 @@ func (p *PurchaseRepository) Insert(purchase *entity.Purchase) error {
 		return result.Error
 	}
 
+	for _, v := range purchase.PurchasesProducts {
+		var stock entity.OnlineStock
+		if result := tx.First(&stock, "product_id = ?", v.ProductID); result.Error != nil {
+			tx.Rollback()
+			return result.Error
+		}
+
+		stock.SoldQuantity++
+		if result := tx.Save(stock); result.Error != nil {
+			tx.Rollback()
+			return result.Error
+		}
+	}
+
 	if result := tx.Commit(); result.Error != nil {
 		tx.Rollback()
 		return result.Error
