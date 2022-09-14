@@ -53,15 +53,15 @@ func (p *ProductController) Update(c *gin.Context, update func(*entity.Product) 
 	c.JSON(http.StatusOK, product)
 }
 
-func (p *ProductController) Delete(c *gin.Context, delete func(*entity.Product) error) {
-	var product entity.Product
-	if err := c.ShouldBindJSON(&product); err != nil {
+func (p *ProductController) Delete(c *gin.Context, delete func(int) error) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
 		p.logger.Error(err)
-		c.AbortWithError(http.StatusBadRequest, c.Error(err))
+		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
 		return
 	}
 
-	if err := delete(&product); err != nil {
+	if err := delete(id); err != nil {
 		p.logger.Error(err)
 		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
 		return

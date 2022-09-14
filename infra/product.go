@@ -50,18 +50,18 @@ func (p *ProductRepository) Update(product *entity.Product) error {
 	return nil
 }
 
-func (p *ProductRepository) Delete(product *entity.Product) error {
+func (p *ProductRepository) Delete(id int) error {
 	tx := p.DB.Begin()
 	if tx.Error != nil {
 		return tx.Error
 	}
 
-	if result := tx.Delete(&entity.OnlineStock{}, "product_id = ?", product.ID); result.Error != nil {
+	if result := tx.Delete(&entity.OnlineStock{}, "product_id = ?", id); result.Error != nil {
 		tx.Rollback()
 		return result.Error
 	}
 
-	if result := tx.Delete(&product); result.Error != nil {
+	if result := tx.Delete(&entity.Product{}, "id = ?", id); result.Error != nil {
 		tx.Rollback()
 		return result.Error
 	}
