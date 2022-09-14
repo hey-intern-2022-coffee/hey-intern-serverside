@@ -18,23 +18,9 @@ func NewProductRepository(db *gorm.DB) *ProductRepository {
 }
 
 func (p *ProductRepository) Insert(product *entity.Product) error {
-	tx := p.DB.Begin()
-	if tx.Error != nil {
-		return tx.Error
-	}
-
-	if result := tx.Create(&product); result.Error != nil {
+	if result := p.DB.Create(&product); result.Error != nil {
 		return result.Error
 	}
-
-	if result := tx.Create(&product.OnlineStock); result.Error != nil {
-		return result.Error
-	}
-
-	if result := tx.Commit(); result.Error != nil {
-		return result.Error
-	}
-
 	return nil
 }
 
