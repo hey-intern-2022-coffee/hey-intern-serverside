@@ -265,3 +265,4 @@ components:
         - phone_number
         - mail_address
         - is_acceptance
+        - online_stock

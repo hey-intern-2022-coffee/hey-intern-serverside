@@ -33,7 +33,7 @@ func (p *ProductController) Post(c *gin.Context, insert func(*entity.Product) er
 		return
 	}
 
-	c.JSON(http.StatusOK, product)
+	c.JSON(http.StatusCreated, product)
 }
 
 func (p *ProductController) Update(c *gin.Context, update func(*entity.Product) error) {
