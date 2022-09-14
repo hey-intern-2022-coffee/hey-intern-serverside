@@ -95,7 +95,10 @@ func (p *ProductRepository) FindAll() ([]entity.Product, error) {
 	}
 
 	var products []entity.Product
-	tx.Find(&products)
+	if result := tx.Find(&products); result.Error != nil {
+		tx.Rollback()
+		return nil, tx.Error
+	}
 
 	for i, product := range products {
 		id := product.ID

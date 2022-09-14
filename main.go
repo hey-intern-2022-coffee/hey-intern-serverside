@@ -65,14 +65,6 @@ func main() {
 		purchaseCtrl.GetPurchaseOne(ctx, purchaseRepo.FindByPurchaseID)
 	})
 
-	r.PUT("/product", func(ctx *gin.Context) {
-		productCtrl.Update(ctx, productRepo.Update)
-	})
-
-	r.DELETE("/product", func(ctx *gin.Context) {
-		productCtrl.Delete(ctx, productRepo.Delete)
-	})
-
 	r.POST("/products", func(ctx *gin.Context) {
 		productCtrl.Post(ctx, productRepo.Insert)
 	})
@@ -81,8 +73,16 @@ func main() {
 		productCtrl.GetAll(ctx, productRepo.FindAll)
 	})
 
+	r.PUT("/products", func(ctx *gin.Context) {
+		productCtrl.Update(ctx, productRepo.Update)
+	})
+
 	r.GET("/onlinestore/allproducts", func(ctx *gin.Context) {
 		productCtrl.GetAll(ctx, productRepo.FindAll)
+	})
+
+	r.DELETE("/products/:id", func(ctx *gin.Context) {
+		productCtrl.Delete(ctx, productRepo.Delete)
 	})
 
 	r.GET("/products/:id", func(ctx *gin.Context) {
