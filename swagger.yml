@@ -246,6 +246,9 @@ components:
                 stock_quantity:
                   description: オンライン商品の在庫
                   type: integer
+                delivered_quantity:
+                  description: オンライン商品の在庫
+                  type: integer
     Products:
       type: object
       description: 登録された商品

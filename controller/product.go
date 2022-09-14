@@ -70,7 +70,7 @@ func (p *ProductController) Delete(c *gin.Context, delete func(int) error) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (p *ProductController) GetOne(c *gin.Context, find func(int)(*entity.Product, error)) {
+func (p *ProductController) GetOne(c *gin.Context, find func(int) (*entity.Product, error)) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		p.logger.Error(err)

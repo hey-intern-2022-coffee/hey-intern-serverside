@@ -18,6 +18,7 @@ func NewProductRepository(db *gorm.DB) *ProductRepository {
 }
 
 func (p *ProductRepository) Insert(product *entity.Product) error {
+	product.OnlineStock.DeliveredQuantity = product.OnlineStock.StockQuantity
 	if result := p.DB.Create(&product); result.Error != nil {
 		return result.Error
 	}
@@ -30,13 +31,13 @@ func (p *ProductRepository) Update(product *entity.Product) error {
 		return tx.Error
 	}
 
-	if result := tx.Save(&product); result.Error != nil {
+	if result := tx.Save(product); result.Error != nil {
 		tx.Rollback()
 		return result.Error
 	}
 
 	var stock entity.OnlineStock
-	if result := tx.First(&stock,"product_id = ?", product.ID).Update("stock_quantity", product.OnlineStock.StockQuantity); result.Error != nil {
+	if result := tx.First(&stock, "product_id = ?", product.ID).Update("stock_quantity", product.OnlineStock.StockQuantity); result.Error != nil {
 		tx.Rollback()
 		return result.Error
 	}
@@ -138,15 +139,19 @@ func (p *ProductRepository) PatchPurchase(id int) (*entity.Product, error) {
 	}
 
 	var stock entity.OnlineStock
-	if result := tx.First(&stock,"product_id = ?", id); result.Error != nil {
+	if result := tx.First(&stock, "product_id = ?", id); result.Error != nil {
+		tx.Rollback()
 		return nil, result.Error
 	}
-	if stock.StockQuantity < 1 {
+	if stock.DeliveredQuantity < 1 {
 		tx.Rollback()
 		return nil, errors.New("stock is 0")
-	} else {
-		stock.StockQuantity--
-		tx.Save(&stock)
+	}
+
+	stock.DeliveredQuantity--
+	if result := tx.Model(&stock).Update("delivered_quantity", stock.DeliveredQuantity); result.Error != nil {
+		tx.Rollback()
+		return nil, result.Error
 	}
 
 	var product entity.Product

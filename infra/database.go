@@ -25,6 +25,7 @@ func NewDB() (*gorm.DB, error) {
 
 	onlineStock := entity.OnlineStock{
 		StockQuantity: 10,
+		DeliveredQuantity: 10,
 		ProductId:     product.ID,
 	}
 	db.Create(&onlineStock)
