@@ -66,7 +66,7 @@ func (p *PurchaseRepository) FindByPurchaseID(id int) (*entity.Purchase, error) 
 	}
 
 	var purchasesProducts []entity.PurchasesProducts
-	if result := tx.Find(&purchasesProducts, "purchase_id = ?", id); result.Error != nil {
+	if result := tx.Find(&purchasesProducts, "purchase_id = ?", purchase.ID); result.Error != nil {
 		tx.Rollback()
 		return nil, result.Error
 	}
