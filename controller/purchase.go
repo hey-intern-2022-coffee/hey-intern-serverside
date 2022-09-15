@@ -55,6 +55,17 @@ func (p *PurchaseController) PutToggle(c *gin.Context, find func(int) (*entity.P
 	c.JSON(http.StatusOK, res)
 }
 
+func (p *PurchaseController) GetAll(c *gin.Context, find func() ([]entity.Purchase, error)) {
+	res, err := find()
+	if err != nil {
+		p.logger.Error(err)
+		c.AbortWithError(http.StatusInternalServerError, c.Error(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
 func (p *PurchaseController) GetPurchaseOne(c *gin.Context, find func(int) (*entity.Purchase, error)) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

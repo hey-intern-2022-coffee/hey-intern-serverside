@@ -61,6 +61,10 @@ func main() {
 		purchaseCtrl.PutToggle(ctx, purchaseRepo.ToggleIsAcceptance)
 	})
 
+	r.GET("/purchase/all", func(ctx *gin.Context) {
+		purchaseCtrl.GetAll(ctx, purchaseRepo.FindAll)
+	})
+
 	r.GET("/purchase/:id", func(ctx *gin.Context) {
 		purchaseCtrl.GetPurchaseOne(ctx, purchaseRepo.FindByPurchaseID)
 	})

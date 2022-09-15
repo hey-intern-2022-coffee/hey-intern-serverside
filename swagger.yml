@@ -74,7 +74,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Purchase"
-
+  /purchase/all:
+    get:
+      summary: 注文一覧を取得する
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Purchase"
   /purchase/{purchases_id}:
     get:
       summary: 事前決済の現地受けとり情報を取得する
