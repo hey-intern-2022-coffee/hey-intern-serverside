@@ -17,9 +17,9 @@ func NewDB() (*gorm.DB, error) {
 	db.AutoMigrate(&entity.Purchase{}, &entity.Product{}, &entity.OnlineStock{}, &entity.OfflineStock{}, &entity.PurchasesProducts{})
 
 	product := entity.Product{
-		Name:     "test",
-		Price:    100,
-		ImageURL: "none",
+		Name:     "イベントうちわ",
+		Price:    1000,
+		ImageURL: "https://cdn-novelty.raksul.com/public_images/2f06a2ee-cb1e-4416-b3c9-eef52688162a",
 	}
 	db.Create(&product)
 
@@ -31,9 +31,9 @@ func NewDB() (*gorm.DB, error) {
 	db.Create(&onlineStock)
 
 	purchase := entity.Purchase{
-		Name:        "Purchase",
-		Address:     "Address",
-		MailAddress: "Mail",
+		Name:        "田中 大貴",
+		Address:     "	高知県四万十市西土佐中半9-7-7",
+		MailAddress: "real@gmail.com",
 	}
 	db.Create(&purchase)
 
