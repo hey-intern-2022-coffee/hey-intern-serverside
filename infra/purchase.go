@@ -48,6 +48,36 @@ func (p *PurchaseRepository) Insert(purchase *entity.Purchase) error {
 	return nil
 }
 
+func (p *PurchaseRepository) FindAll() ([]entity.Purchase, error) {
+	tx := p.DB.Begin()
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	var purchases []entity.Purchase
+	if result := tx.Find(&purchases); result.Error != nil {
+		tx.Rollback()
+		return nil, result.Error
+	}
+
+	for i, purchase := range purchases {
+		id := purchase.ID
+		var purchasesProducts []entity.PurchasesProducts
+		if result := tx.Where("purchase_id = ?", id).Find(&purchasesProducts); result.Error != nil {
+			tx.Rollback()
+			return nil, result.Error
+		}
+		purchases[i].PurchasesProducts = purchasesProducts
+	}
+
+	if result := tx.Commit(); result.Error != nil {
+		tx.Rollback()
+		return nil, result.Error
+	}
+
+	return purchases, nil
+}
+
 func (p *PurchaseRepository) ToggleIsAcceptance(id int) (*entity.Purchase, error) {
 	var purchase entity.Purchase
 	if result := p.DB.First(&purchase, "id = ?", id).Update("is_acceptance", true); result.Error != nil {
